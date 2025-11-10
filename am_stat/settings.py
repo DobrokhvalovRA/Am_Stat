@@ -72,4 +72,7 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+BOT_TOKEN = "8221066430:AAHUm1PHLrydTWr5vVL2-tMLCMfglLbpzoc"
+TG_GROUP_CHAT_ID = "-1003486104098"   # сюда вставьте chat_id вашей Telegram-группы
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

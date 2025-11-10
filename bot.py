@@ -1,74 +1,109 @@
+import os
+import logging
 import requests
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Updater, CommandHandler, CallbackContext, CallbackQueryHandler
+from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes,  MessageHandler, filters
 
-API_URL = "http://localhost:8000/api/tournaments/"
+BOT_TOKEN = os.getenv("BOT_TOKEN") or "8221066430:AAHUm1PHLrydTWr5vVL2-tMLCMfglLbpzoc"
+DJANGO_API = "http://localhost:8000/api/tournaments/"
 
-def start(update: Update, context: CallbackContext):
-    update.message.reply_text("Здравствуйте! Используйте /tournaments для просмотра турниров.")
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-def tournaments_command(update: Update, context: CallbackContext):
-    resp = requests.get(API_URL)
-    tournaments = resp.json()['results']
-    msg = "Турниры:\n"
-    for t in tournaments:
-        msg += f"{t['id']}: {t['name']} ({t['date']})\n"
-    update.message.reply_text(msg)
+async def echo_chat_id(update, context):
+    chat_id = update.effective_chat.id
+    await update.message.reply_text(f"Chat ID этой группы: {chat_id}")
 
-def join_callback(update: Update, context: CallbackContext):
+def build_tournament_message(t):
+    text = (
+        f"Турнир №{t['id']}\n"
+        f"Название: {t['name']}\n"
+        f"Дата: {t['date']}\n"
+        f"Место проведения: {t['location']}\n"
+        f"Формат: {'Одиночный' if t['format']=='solo' else 'Парный'}\n"
+        f"Взнос: {t['fee']}\n"
+        f"Уровень: {t['level']}\n"
+        f"Количество игроков: {t['players_count']}\n"
+        "-----------------------------\n"
+        "Список игроков:\n"
+    )
+    players = t.get('participants', [])
+    for i, p in enumerate(players, 1):
+        user_data = p.get('user', {})
+        first_name = user_data.get('first_name', '')
+        last_name = user_data.get('last_name', '')
+        telegram_id = user_data.get('telegram_id', '')
+        phone = user_data.get('phone_number', '')
+        display_name = " ".join(part for part in [first_name, last_name, phone] if part).strip()
+        if not display_name:
+            display_name = user_data.get('username', 'Пользователь')
+        text += f"{i}. {display_name} ({telegram_id})\n"
+    for i in range(len(players) + 1, t['players_count'] + 1):
+        text += f"{i}. [свободно]\n"
+    return text
+
+def build_buttons(t):
+    if t['format'] == 'solo':
+        buttons = [
+            [InlineKeyboardButton("Вступить", callback_data=f"join_{t['id']}"),
+             InlineKeyboardButton("Выписаться", callback_data=f"leave_{t['id']}")]
+        ]
+    elif t['format'] == 'pair':
+        buttons = [
+            [InlineKeyboardButton("Добавить игрока в пару", callback_data=f"addpair_{t['id']}"),
+             InlineKeyboardButton("Добавиться в пару", callback_data=f"joinpair_{t['id']}")]
+        ]
+    else:
+        buttons = []
+    return InlineKeyboardMarkup(buttons)
+
+async def announce_tournament(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    args = context.args
+    if not args:
+        await update.message.reply_text("Укажите id турнира, например: /announce_tournament 1")
+        return
+    tournament_id = args[0]
+    r = requests.get(f"{DJANGO_API}{tournament_id}/").json()
+    message_text = build_tournament_message(r)
+    reply_markup = build_buttons(r)
+    msg = await update.message.reply_text(message_text, reply_markup=reply_markup)
+    # Можно записать msg.message_id и update.effective_chat.id в Django Tournament для автоматического редактирования
+
+async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
-    user_id = update.effective_user.id
-    # Пример запроса для добавления участника - в реальном проекте потребуется аутентификация!
-    # requests.post(...)
-    query.answer("Вы добавлены в турнир (заглушка).")
+    user_id = query.from_user.id
+    username = query.from_user.username or query.from_user.first_name
+    action, tournament_id = query.data.split("_", maxsplit=1)
+    payload = {"telegram_id": user_id, "username": username, "tournament_id": tournament_id}
 
-updater = Updater("BOT_TOKEN")
-dp = updater.dispatcher
-dp.add_handler(CommandHandler("start", start))
-dp.add_handler(CommandHandler("tournaments", tournaments_command))
-dp.add_handler(CallbackQueryHandler(join_callback))
+    # Действия пользователя
+    if action == "join":
+        requests.post(f"{DJANGO_API}{tournament_id}/join/", json=payload)
+        await query.answer("Вы записались!")
+    elif action == "leave":
+        requests.post(f"{DJANGO_API}{tournament_id}/leave/", json=payload)
+        await query.answer("Вы выписались!")
+    elif action == "addpair":
+        await query.answer("Функция пар скоро будет.")
+    elif action == "joinpair":
+        await query.answer("Функция пар скоро будет.")
+
+    # Получаем обновлённые данные турнира и редактируем сообщение
+    r = requests.get(f"{DJANGO_API}{tournament_id}/").json()
+    message_text = build_tournament_message(r)
+    reply_markup = build_buttons(r)
+    try:
+        await query.edit_message_text(text=message_text, reply_markup=reply_markup)
+    except Exception as e:
+        logger.warning(f"edit_message_text failed: {e}")
+
+def main():
+    app = Application.builder().token(BOT_TOKEN).build()
+    app.add_handler(CommandHandler("announce_tournament", announce_tournament))
+    app.add_handler(CallbackQueryHandler(button_handler))
+    app.add_handler(MessageHandler(filters.ALL, echo_chat_id))
+    logger.info("Бот запущен!")
+    app.run_polling()
 
 if __name__ == "__main__":
-    updater.start_polling()
-
-"""from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Updater, CommandHandler, CallbackContext, CallbackQueryHandler
-import requests
-
-def create_tournament_message(tournament_data):
-    text = (
-        f"Турнир №{tournament_data['id']}\n"
-        f"Название: {tournament_data['name']}\n"
-        f"Дата: {tournament_data['date']}\n"
-        f"Место: {tournament_data['location']}\n"
-        f"Формат: {tournament_data['format_display']}\n"
-        f"Взнос: {tournament_data['fee']}\n"
-        f"Уровень: {tournament_data['level']}\n"
-        f"Игроков: {tournament_data['players_count']}\n"
-        f"----\n"
-        f"Список игроков:\n"
-        + "\n".join(tournament_data['players'])
-    )
-    buttons = []
-    if tournament_data['format'] == "solo":
-        buttons.append([InlineKeyboardButton("Вступить", callback_data="join"), InlineKeyboardButton("Выписаться", callback_data="leave")])
-    elif tournament_data['format'] == "pair":
-        buttons.append([InlineKeyboardButton("Добавить игрока в пару", callback_data="add_to_pair"), InlineKeyboardButton("Добавиться в пару", callback_data="join_pair")])
-    return text, InlineKeyboardMarkup(buttons)
-
-def tournament_handler(update: Update, context: CallbackContext):
-    # tournament_data = ... get from Django API
-    text, markup = create_tournament_message(tournament_data)
-    update.message.reply_text(text, reply_markup=markup)
-
-def button_handler(update: Update, context: CallbackContext):
-    query = update.callback_query
-    user_id = update.effective_user.id
-    username = update.effective_user.username
-    # Handle button click, call Django API to add/remove player, etc.
-    # After change: edit message with new list of players!!
-
-updater = Updater("BOT_TOKEN")
-updater.dispatcher.add_handler(CommandHandler("tournament", tournament_handler))
-updater.dispatcher.add_handler(CallbackQueryHandler(button_handler))
-updater.start_polling()"""
+    main()

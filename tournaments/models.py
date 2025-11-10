@@ -23,5 +23,11 @@ class Tournament(models.Model):
     sport_type = models.CharField(max_length=100, blank=True)
     organizer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='organized_tournaments')
 
+    participants = models.ManyToManyField(
+        User,
+        through='participants.Participant',
+        related_name='tournaments_participated'
+    )
+
     def __str__(self):
         return f"{self.name} ({self.date})"
