@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Мои турниры</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1 class="my-3">Мои турниры</h1>
+    <a href="{% url 'tournaments:create' %}" class="btn btn-primary my-2">Создать турнир</a>
+    <ul class="list-group">
+        {% for tour in tournaments %}
+            <li class="list-group-item">
+                <strong>{{ tour.name }}</strong>
+                <span class="text-muted">{{ tour.date }}</span>
+                — <a href="{% url 'tournaments:detail' tour.id %}">Подробнее</a>
+            </li>
+        {% empty %}
+            <li class="list-group-item text-danger">Нет турниров</li>
+        {% endfor %}
+    </ul>
+</div>
+</body>
+</html>
