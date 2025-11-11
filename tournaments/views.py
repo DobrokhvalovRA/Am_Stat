@@ -3,9 +3,6 @@ from tournaments.models import Tournament, User
 from participants.models import Participant
 from .telegram_notify import send_tournament_to_telegram, delete_tournament_message
 
-def my_tournaments(request):
-    tournaments = Tournament.objects.filter(organizer=request.user)
-    return render(request, 'tournaments/my_tournaments.html', {'tournaments': tournaments})
 
 def create_tournament(request):
     if request.method == 'POST':
@@ -28,7 +25,7 @@ def create_tournament(request):
         )
         send_tournament_to_telegram(tournament, tournament.participants_through.all())
         return redirect('my_tournaments')
-    return render(request, 'tournaments/create_tournament.html')
+
 
 def join_tournament(request, tournament_id):
     tournament = get_object_or_404(Tournament, id=tournament_id)

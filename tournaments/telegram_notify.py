@@ -19,11 +19,33 @@ def build_message(tournament, participants=None):
         first_name = getattr(p.user, "first_name", "")
         last_name = getattr(p.user, "last_name", "")
         telegram_id = getattr(p.user, "telegram_id", "")
-        display_name = f"{first_name} {last_name}".strip()
+        display_name = f"{first_name} {last_name}".strip() or getattr(p.user, "username", "")
         text += f"{i}. {display_name} ({telegram_id})\n"
     for i in range(len(participants)+1, tournament.players_count+1):
         text += f"{i}. [свободно]\n"
     return text
+
+def update_tournament_message(tournament, participants):
+    if not tournament.tg_chat_id or not tournament.tg_message_id:
+        return  # невозможно обновить сообщение без этих данных
+
+    TG_BOT_TOKEN = getattr(settings, "BOT_TOKEN", "YOUR_BOT_TOKEN_HERE")
+    MSG_API = f"https://api.telegram.org/bot{TG_BOT_TOKEN}/editMessageText"
+
+    message_text = build_message(tournament, participants)
+    buttons = build_buttons(tournament)
+    payload = {
+        "chat_id": tournament.tg_chat_id,
+        "message_id": int(tournament.tg_message_id),
+        "text": message_text,
+        "reply_markup": buttons,
+        "parse_mode": "HTML"
+    }
+    try:
+        resp = requests.post(MSG_API, json=payload)
+        resp.raise_for_status()
+    except Exception as e:
+        print(f"Ошибка обновления сообщения турнира в Telegram: {e}")
 
 def build_buttons(tournament):
     if tournament.format == 'solo':
@@ -41,7 +63,7 @@ def build_buttons(tournament):
     return {"inline_keyboard": buttons}
 
 def send_tournament_to_telegram(tournament, participants=None):
-    TG_BOT_TOKEN = getattr(settings, "BOT_TOKEN", "8221066430:AAHUm1PHLrydTWr5vVL2-tMLCMfglLbpzoc")
+    TG_BOT_TOKEN = getattr(settings, "BOT_TOKEN", "YOUR_BOT_TOKEN_HERE")
     TG_CHAT_ID = getattr(settings, "TG_GROUP_CHAT_ID", "YOUR_CHAT_ID_HERE")
     MSG_API = f"https://api.telegram.org/bot{TG_BOT_TOKEN}/sendMessage"
     text = build_message(tournament, participants)
@@ -57,6 +79,7 @@ def send_tournament_to_telegram(tournament, participants=None):
         tournament.tg_chat_id = TG_CHAT_ID
         tournament.tg_message_id = str(resp.json()["result"]["message_id"])
         tournament.save(update_fields=["tg_chat_id", "tg_message_id"])
+
 
 def delete_tournament_message(tournament):
     TG_BOT_TOKEN = getattr(settings, "BOT_TOKEN", "YOUR_BOT_TOKEN_HERE")
