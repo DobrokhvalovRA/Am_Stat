@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from tournaments.models import Tournament, User
 from participants.models import Participant
-from .telegram_notify import send_tournament_to_telegram, update_tournament_message, delete_tournament_message
+from .telegram_notify import send_tournament_to_telegram, delete_tournament_message
 
 def my_tournaments(request):
     tournaments = Tournament.objects.filter(organizer=request.user)
@@ -35,16 +35,12 @@ def join_tournament(request, tournament_id):
     user = request.user
     # используйте или создавайте User с реальными telegram_id и т.п.
     Participant.objects.get_or_create(tournament=tournament, user=user)
-    participants = tournament.participants_through.all()
-    update_tournament_message(tournament, participants)
     return redirect('my_tournaments')
 
 def leave_tournament(request, tournament_id):
     tournament = get_object_or_404(Tournament, id=tournament_id)
     user = request.user
     Participant.objects.filter(tournament=tournament, user=user).delete()
-    participants = tournament.participants_through.all()
-    update_tournament_message(tournament, participants)
     return redirect('my_tournaments')
 
 def delete_tournament(request, tournament_id):

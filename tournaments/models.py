@@ -28,6 +28,8 @@ class Tournament(models.Model):
         through='participants.Participant',
         related_name='tournaments_participated'
     )
+    tg_chat_id = models.CharField(max_length=32, blank=True, null=True)
+    tg_message_id = models.CharField(max_length=32, blank=True, null=True)
 
     def __str__(self):
         return f"{self.name} ({self.date})"

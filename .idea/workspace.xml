@@ -5,18 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8c3878c4-7b29-4716-b6b7-73e153daf55d" name="Changes" comment="10.11.2025">
-      <change afterPath="$PROJECT_DIR$/participants/serializers.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tournaments/signals.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tournaments/telegram_notify.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/am_stat/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/am_stat/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/participants/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/participants/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournaments/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tournaments/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournaments/api_views.py" beforeDir="false" afterPath="$PROJECT_DIR$/tournaments/api_views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournaments/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/tournaments/apps.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tournaments/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/tournaments/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tournaments/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/tournaments/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournaments/telegram_notify.py" beforeDir="false" afterPath="$PROJECT_DIR$/tournaments/telegram_notify.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tournaments/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/tournaments/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -35,36 +28,36 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "dob-ra_nukilopu"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;dob-ra_nukilopu&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/dob-ra_nukilopu/Am_stat.git",
-    "accountId": "116cf7a9-4dd3-43b0-92a5-ca85752b2ce6"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/dob-ra_nukilopu/Am_stat.git&quot;,
+    &quot;accountId&quot;: &quot;116cf7a9-4dd3-43b0-92a5-ca85752b2ce6&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="35H4dBipYiSFKfnpFC5ZOudL9zi" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Python.bot.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Python.bot.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -97,7 +90,15 @@
       <option name="project" value="LOCAL" />
       <updated>1762761334925</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="10.11.2025">
+      <option name="closed" value="true" />
+      <created>1762788113277</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1762788113277</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
