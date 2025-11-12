@@ -1,0 +1,21 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<h2>Начало турнира: {{ tournament.name }}</h2>
+<p>Дата: {{ tournament.date }}</p>
+<p>Место: {{ tournament.location }}</p>
+<p>Организатор: {{ tournament.organizer }}</p>
+<hr>
+<h4>Участники:</h4>
+<ul>
+  {% for p in participants %}
+    <li>{{ p.user.first_name }} {{ p.user.last_name }} ({{ p.user.telegram_id }})
+    {% if p.user.username %}| {{ p.user.username }}{% endif %}</li>
+  {% empty %}
+    <li>Нет участников</li>
+  {% endfor %}
+</ul>
+<a class="btn btn-secondary" href="../../">Назад</a>
+{% endblock %}
+
+
+

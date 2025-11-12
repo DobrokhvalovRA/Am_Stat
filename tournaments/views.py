@@ -2,29 +2,30 @@ from django.shortcuts import render, redirect, get_object_or_404
 from tournaments.models import Tournament, User
 from participants.models import Participant
 from .telegram_notify import send_tournament_to_telegram, delete_tournament_message
+from .forms import TournamentForm
+
 
 
 def create_tournament(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
-        date = request.POST.get('date')
-        location = request.POST.get('location')
-        format = request.POST.get('format')
-        fee = request.POST.get('fee')
-        level = request.POST.get('level')
-        players_count = request.POST.get('players_count')
-        tournament = Tournament.objects.create(
-            name=name,
-            date=date,
-            location=location,
-            format=format,
-            fee=fee,
-            level=level,
-            players_count=players_count,
-            organizer=request.user,
-        )
-        send_tournament_to_telegram(tournament, tournament.participants_through.all())
-        return redirect('my_tournaments')
+        form = TournamentForm(request.POST)
+        if form.is_valid():
+            tournament = form.save()
+            return redirect('tournaments:my_tournaments')
+    else:
+        form = TournamentForm()
+    return render(request, 'tournaments/create_tournament.html', {'form': form})
+
+def edit_tournament(request, pk):
+    tournament = get_object_or_404(Tournament, pk=pk)
+    if request.method == 'POST':
+        form = TournamentForm(request.POST, instance=tournament)
+        if form.is_valid():
+            form.save()
+            return redirect('tournaments:my_tournaments')
+    else:
+        form = TournamentForm(instance=tournament)
+    return render(request, 'tournaments/tournament_edit.html', {'form': form})
 
 
 def join_tournament(request, tournament_id):
@@ -45,6 +46,17 @@ def delete_tournament(request, tournament_id):
     delete_tournament_message(tournament)
     tournament.delete()
     return redirect('my_tournaments')
+
+"""def edit_tournament(request, pk):
+    tournament = get_object_or_404(Tournament, pk=pk)
+    if request.method == 'POST':
+        form = TournamentForm(request.POST, instance=tournament)
+        if form.is_valid():
+            form.save()
+            return redirect('tournaments:my_tournaments')
+    else:
+        form = TournamentForm(instance=tournament)
+    return render(request, 'tournaments/tournament_edit.html', {'form': form})"""
 
 def index(request):
     return render(request, "index.html")

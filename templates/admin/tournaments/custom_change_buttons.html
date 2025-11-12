@@ -1,0 +1,19 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<h2>Турнир: {{ tournament.name }}</h2>
+<p>Дата: {{ tournament.date }}</p>
+<p>Место: {{ tournament.location }}</p>
+<p>Организатор:
+  {% if tournament.organizer %}
+    {{ tournament.organizer.first_name }} {{ tournament.organizer.last_name }}
+    (ID: {{ tournament.organizer.id }})
+    {% if tournament.organizer.username %}| {{ tournament.organizer.username }}{% endif %}
+  {% else %}
+    <span class="text-danger">Не указан</span>
+  {% endif %}
+</p>
+<br>
+<a class="btn btn-primary" href="{% url 'admin:tournament-custom-change' tournament.id %}">Редактировать</a>
+<a class="btn btn-success" href="{% url 'admin:tournament-start' tournament.id %}">Начать турнир</a>
+<a class="btn btn-secondary" href="../../">Назад</a>
+{% endblock %}

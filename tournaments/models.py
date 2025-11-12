@@ -1,5 +1,6 @@
 from django.db import models
 from users.models import User
+from multiselectfield import MultiSelectField
 
 class Tournament(models.Model):
     FORMAT_CHOICES = [
@@ -11,13 +12,23 @@ class Tournament(models.Model):
         ('cancelled', 'Отменён'),
         ('finished', 'Завершён'),
     ]
+    LEVEL_CHOICES = [
+        ('A+', 'A+'),
+        ('A', 'A'),
+        ('B+', 'B+'),
+        ('B', 'B'),
+        ('C+', 'C+'),
+        ('C', 'C'),
+        ('D+', 'D+'),
+        ('D', 'D'),
+    ]
 
     name = models.CharField(max_length=200)
     date = models.DateField()
     location = models.CharField(max_length=150)
     format = models.CharField(max_length=10, choices=FORMAT_CHOICES)
     fee = models.DecimalField(max_digits=8, decimal_places=2)
-    level = models.CharField(max_length=20)
+    level = MultiSelectField(choices=LEVEL_CHOICES, default=[], blank=True, verbose_name='Допустимые уровни')
     players_count = models.PositiveIntegerField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='active')
     sport_type = models.CharField(max_length=100, blank=True)

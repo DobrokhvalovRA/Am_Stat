@@ -5,13 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8c3878c4-7b29-4716-b6b7-73e153daf55d" name="Changes" comment="11.11.2025 'пока рабочая'">
-      <change afterPath="$PROJECT_DIR$/templates/tournaments/create_tournament.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/tournaments/edit_tournament.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/tournaments/my_tournaments.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/tournaments/custom_change_buttons.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/tournaments/tournament_start.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/am_stat/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/am_stat/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournaments/signals.py" beforeDir="false" afterPath="$PROJECT_DIR$/tournaments/signals.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournaments/telegram_notify.py" beforeDir="false" afterPath="$PROJECT_DIR$/tournaments/telegram_notify.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/participants/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/participants/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournaments/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/tournaments/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournaments/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/tournaments/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournaments/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/tournaments/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tournaments/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/tournaments/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -108,7 +108,15 @@
       <option name="project" value="LOCAL" />
       <updated>1762864509079</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="11.11.2025 'пока рабочая'">
+      <option name="closed" value="true" />
+      <created>1762869382656</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1762869382656</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
