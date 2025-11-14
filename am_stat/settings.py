@@ -68,7 +68,11 @@ TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 USE_TZ = True
 
+
+
+LOGIN_URL = '/login/'
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -76,3 +80,8 @@ BOT_TOKEN = "8221066430:AAHUm1PHLrydTWr5vVL2-tMLCMfglLbpzoc"
 TG_GROUP_CHAT_ID = "-1003486104098"   # сюда вставьте chat_id вашей Telegram-группы
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTHENTICATION_BACKENDS = [
+    "users.auth.TelegramIDBackend",  # наш новый бэкенд
+    "django.contrib.auth.backends.ModelBackend"  # стандартный
+]

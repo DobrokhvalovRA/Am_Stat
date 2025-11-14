@@ -1,11 +1,84 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Am_Stat</title>
-</head>
-<body>
-    <h1>Это главная страница Am_Stat!</h1>
-    <a href="/admin/">Войти как администратор</a>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Вход по Telegram ID{% endblock %}
+
+
+
+
+
+ <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+{% block menu %}
+        <nav id="navmenu" class="navmenu">
+            <ul>
+                <li><a href="#about">О чем мы тут</a></li>
+                <li><a href="#sports">Виды спорта</a></li>
+                <li><a href="#portfolio">Статистика</a></li>
+                <li><a href="#team">Турниры</a></li>
+                <li><a href="/admin">Вход для организаторов</a></li>
+                <li><a href="/login">Вход для участников</a></li>
+            </ul>
+            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
+
+    </div>
+{% endblock %}
+{% block content %}
+    <!-- About Section -->
+    <section id="about" class="about section">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <span class="subtitle">О чем мы тут</span>
+            <h2></h2>
+            <p>Тут можно глянуть статистику по твоим турнирам.</p>
+        </div><!-- End Section Title -->
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        </div>
+
+    </section><!-- /About Section -->
+
+    <!-- Services Section -->
+    <section id="sports" class="services section">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <span class="subtitle">Виды спорта</span>
+            <h2></h2>
+            <p></p>
+        </div><!-- End Section Title -->
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="row gy-5">
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <i class="bi bi-graph-up-arrow"></i>
+                        </div>
+                        <h3>Пляжный волейбол</h3>
+                        <p></p>
+                        <a href="service-details.html" class="service-link">
+                            Learn More <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div><!-- End Service Item -->
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <i class="bi bi-palette"></i>
+                        </div>
+                        <h3>Пляжный теннис</h3>
+                        <p></p>
+                        <a href="service-details.html" class="service-link">
+                            Learn More <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div><!-- End Service Item -->
+            </div>
+        </div>
+
+    </section><!-- /Services Section -->
+{% endblock %}

@@ -1,19 +1,39 @@
-{% extends "admin/base_site.html" %}
+{% extends "base.html" %}
+
+{% block title %}Турнир: {{ tournament.name }}{% endblock %}
+
 {% block content %}
-<h2>Турнир: {{ tournament.name }}</h2>
-<p>Дата: {{ tournament.date }}</p>
-<p>Место: {{ tournament.location }}</p>
-<p>Организатор:
-  {% if tournament.organizer %}
-    {{ tournament.organizer.first_name }} {{ tournament.organizer.last_name }}
-    (ID: {{ tournament.organizer.id }})
-    {% if tournament.organizer.username %}| {{ tournament.organizer.username }}{% endif %}
-  {% else %}
-    <span class="text-danger">Не указан</span>
-  {% endif %}
-</p>
-<br>
-<a class="btn btn-primary" href="{% url 'admin:tournament-custom-change' tournament.id %}">Редактировать</a>
-<a class="btn btn-success" href="{% url 'admin:tournament-start' tournament.id %}">Начать турнир</a>
-<a class="btn btn-secondary" href="../../">Назад</a>
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="mb-3 text-center">Турнир: {{ tournament.name }}</h2>
+                    <ul class="list-group mb-4">
+                        <li class="list-group-item"><strong>Дата:</strong> {{ tournament.date }}</li>
+                        <li class="list-group-item"><strong>Место:</strong> {{ tournament.location }}</li>
+                        <li class="list-group-item">
+                            <strong>Организатор:</strong>
+                            {% if tournament.organizer %}
+                                {{ tournament.organizer.first_name }} {{ tournament.organizer.last_name }}
+                                (ID: {{ tournament.organizer.id }})
+                                {% if tournament.organizer.username %}| {{ tournament.organizer.username }}{% endif %}
+                            {% else %}
+                                <span class="text-danger">Не указан</span>
+                            {% endif %}
+                        </li>
+                    </ul>
+
+                    <div class="d-flex justify-content-between">
+                        <a class="btn btn-primary flex-grow-1 me-2" href="{% url 'admin:tournament-custom-change' tournament.id %}">Редактировать</a>
+                        <a class="btn btn-success flex-grow-1 me-2" href="{% url 'admin:tournament-start' tournament.id %}">Начать турнир</a>
+                        <a class="btn btn-secondary flex-grow-1" href="../../">Назад</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 {% endblock %}

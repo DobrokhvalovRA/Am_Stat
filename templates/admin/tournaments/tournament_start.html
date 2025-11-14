@@ -1,21 +1,44 @@
-{% extends "admin/base_site.html" %}
+{% extends "base.html" %}
+
+{% block title %}Начало турнира: {{ tournament.name }}{% endblock %}
+
 {% block content %}
-<h2>Начало турнира: {{ tournament.name }}</h2>
-<p>Дата: {{ tournament.date }}</p>
-<p>Место: {{ tournament.location }}</p>
-<p>Организатор: {{ tournament.organizer }}</p>
-<hr>
-<h4>Участники:</h4>
-<ul>
-  {% for p in participants %}
-    <li>{{ p.user.first_name }} {{ p.user.last_name }} ({{ p.user.telegram_id }})
-    {% if p.user.username %}| {{ p.user.username }}{% endif %}</li>
-  {% empty %}
-    <li>Нет участников</li>
-  {% endfor %}
-</ul>
-<a class="btn btn-secondary" href="../../">Назад</a>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="mb-3 text-center">Начало турнира: {{ tournament.name }}</h2>
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item"><strong>Дата:</strong> {{ tournament.date }}</li>
+                        <li class="list-group-item"><strong>Место:</strong> {{ tournament.location }}</li>
+                        <li class="list-group-item"><strong>Организатор:</strong>
+                          {% if tournament.organizer %}
+                            {{ tournament.organizer.first_name }} {{ tournament.organizer.last_name }}
+                            (ID: {{ tournament.organizer.id }})
+                            {% if tournament.organizer.username %}| {{ tournament.organizer.username }}{% endif %}
+                          {% else %}
+                            <span class="text-danger">Не указан</span>
+                          {% endif %}
+                        </li>
+                    </ul>
+                    <h4 class="mb-2">Участники:</h4>
+                    <ul class="list-group mb-4">
+                      {% for p in participants %}
+                        <li class="list-group-item">
+                          {{ p.user.first_name }} {{ p.user.last_name }} ({{ p.user.telegram_id }})
+                          {% if p.user.username %}| {{ p.user.username }}{% endif %}
+                        </li>
+                      {% empty %}
+                        <li class="list-group-item">Нет участников</li>
+                      {% endfor %}
+                    </ul>
+                    <div class="d-flex justify-content-end">
+                        <a class="btn btn-secondary flex-grow-1" href="../../">Назад</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
-
-
-

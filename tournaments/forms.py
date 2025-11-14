@@ -11,17 +11,10 @@ class TournamentForm(forms.ModelForm):
     class Meta:
         model = Tournament
         fields = [
-            "name", "date", "allowed_levels",
-            # все остальные поля которые есть в модели Tournament
+            'name', 'date', 'location', 'format', 'fee', "allowed_levels",'players_count', 'sport_type'
         ]
-"""from django import forms
-from .models import Tournament
-
-class TournamentForm(forms.ModelForm):
-    class Meta:
-        model = Tournament
-        fields = ['name', 'date', 'location', 'format', 'fee', 'level', 'players_count', 'sport_type']
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
-            'fee': forms.NumberInput(attrs={'step': '0.01'}),
-        }"""
+            'fee': forms.NumberInput(attrs={'step': '50.'}),
+            "sport_type": forms.Select(),
+        }
