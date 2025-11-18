@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>{% block title %}Index - Axis Bootstrap Template{% endblock %}</title>
+    <title>{% block title %}Am Stat{% endblock %}</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
 
@@ -39,7 +39,9 @@
     <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
         <a href="{% url 'home' %}" class="logo d-flex align-items-center">
-            <h1 class="sitename">Am Stat!</h1>
+            <!--<h1 class="sitename">Am Stat!</h1> -->
+            <img src="{% static 'assets/img/logo_new.jpg' %}" alt="logo">
+
         </a>
         {% block menu %}
         {% endblock %}
