@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Вход по Telegram ID{% endblock %}
+{% block title %}Вход по Telegram ID или Username{% endblock %}
 
 {% block content %}
 <div class="container py-5">
@@ -8,25 +8,48 @@
         <div class="col-md-6 col-lg-4">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h2 class="text-center mb-4">Вход по Telegram ID</h2>
+                    <h2 class="text-center mb-4">Вход</h2>
                     {% if error %}
                       <div class="alert alert-danger text-center">{{ error }}</div>
                     {% endif %}
+                    <div class="text-center mb-3">
+                        <a href="#" id="show-id" class="me-3">Вход по ID</a>
+                        <a href="#" id="show-username">Вход по Username</a>
+                    </div>
                     <form method="post" action="">
                         {% csrf_token %}
-                        <div class="mb-3">
+                        <div id="field-id" class="mb-3">
                             <label for="id_telegram_id" class="form-label">Telegram ID</label>
-                            <input type="text" name="telegram_id" id="id_telegram_id" class="form-control" required>
+                            <input type="text" name="telegram_id" id="id_telegram_id" class="form-control">
+                        </div>
+                        <div id="field-username" class="mb-3" style="display:none;">
+                            <label for="id_telegram_username" class="form-label">Telegram Username (ник)</label>
+                            <input type="text" name="telegram_username" id="id_telegram_username" class="form-control">
                         </div>
                         <div class="mb-3">
                             <label for="id_password" class="form-label">Пароль (если установлен)</label>
                             <input type="password" name="password" id="id_password" class="form-control">
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Войти</button>
+                        <small class="text-muted" id="field-info">Укажите Telegram ID</small>
+                        <button type="submit" class="btn btn-primary w-100 mt-3">Войти</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+document.getElementById('show-id').onclick = function(e) {
+    e.preventDefault();
+    document.getElementById('field-id').style.display = '';
+    document.getElementById('field-username').style.display = 'none';
+    document.getElementById('field-info').innerText = "Укажите Telegram ID";
+};
+document.getElementById('show-username').onclick = function(e) {
+    e.preventDefault();
+    document.getElementById('field-id').style.display = 'none';
+    document.getElementById('field-username').style.display = '';
+    document.getElementById('field-info').innerText = "Укажите Telegram Username (ник)";
+};
+</script>
 {% endblock %}

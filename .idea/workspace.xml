@@ -4,11 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8c3878c4-7b29-4716-b6b7-73e153daf55d" name="Changes" comment="14.11.2025 'Делаем для оргов'">
+    <list default="true" id="8c3878c4-7b29-4716-b6b7-73e153daf55d" name="Changes" comment="18.11.2025 'Делаем для оргов'">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/am_stat/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/am_stat/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/registration/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/registration/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/users/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/users/profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/auth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,7 +131,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763107919584</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="18.11.2025 'Делаем для оргов'">
+      <option name="closed" value="true" />
+      <created>1763468083400</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1763468083400</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -146,7 +157,8 @@
     <MESSAGE value="10.11.2025" />
     <MESSAGE value="11.11.2025 'пока рабочая'" />
     <MESSAGE value="14.11.2025 'Делаем для оргов'" />
-    <option name="LAST_COMMIT_MESSAGE" value="14.11.2025 'Делаем для оргов'" />
+    <MESSAGE value="18.11.2025 'Делаем для оргов'" />
+    <option name="LAST_COMMIT_MESSAGE" value="18.11.2025 'Делаем для оргов'" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

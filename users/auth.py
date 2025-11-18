@@ -1,21 +1,22 @@
 from django.contrib.auth.backends import ModelBackend
 from users.models import User
 
-class TelegramIDBackend(ModelBackend):
-    def authenticate(self, request, telegram_id=None, password=None, **kwargs):
-        if telegram_id is None:
-            return None
-        try:
-            user = User.objects.get(telegram_id=telegram_id)
+class TelegramBackend(ModelBackend):
+    def authenticate(self, request, telegram_id=None, telegram_username=None, password=None, **kwargs):
+        user = None
+        if telegram_id:
+            user = User.objects.filter(telegram_id=telegram_id).first()
+        if not user and telegram_username:
+            user = User.objects.filter(username=telegram_username).first()
+        if user:
             if user.has_usable_password():
-                # вход с паролем
+                # если пароль установлен, проверяй по паролю
                 if password and user.check_password(password):
                     return user
             else:
-                # вход без пароля только по telegram_id (первый вход)
+                # если пароля нет — логинить только по id/username
                 return user
-        except User.DoesNotExist:
-            return None
+        return None
 
     def get_user(self, user_id):
         try:

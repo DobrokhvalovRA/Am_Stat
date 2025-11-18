@@ -46,19 +46,19 @@
                             <form method="post" enctype="multipart/form-data" action="">
                                 {% csrf_token %}
                                 <div class="mb-3">
-                                    <label for="nickname" class="form-label">Никнейм:</label>
-                                    <input type="text" id="nickname" name="nickname" value="{{ user.nickname }}" class="form-control">
+                                    <label for="username" class="form-label">Имя пользователя:</label>
+                                    <input type="text" id="username" name="username" value="{{ user.username }}" class="form-control">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="nickname" class="form-label">Имя:</label>
+                                    <label for="username" class="form-label">Имя:</label>
                                     <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}" class="form-control">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="nickname" class="form-label">Фамилия:</label>
+                                    <label for="username" class="form-label">Фамилия:</label>
                                     <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}" class="form-control">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="nickname" class="form-label">E-mail:</label>
+                                    <label for="username" class="form-label">E-mail:</label>
                                     <input type="text" id="email" name="email" value="{{ user.email }}" class="form-control">
                                 </div>
                                 <div class="mb-3">

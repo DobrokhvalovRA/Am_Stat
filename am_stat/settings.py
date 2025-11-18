@@ -82,6 +82,6 @@ TG_GROUP_CHAT_ID = "-1003486104098"   # сюда вставьте chat_id ваш
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATION_BACKENDS = [
-    "users.auth.TelegramIDBackend",  # наш новый бэкенд
-    "django.contrib.auth.backends.ModelBackend"  # стандартный
+    'users.auth.TelegramBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]

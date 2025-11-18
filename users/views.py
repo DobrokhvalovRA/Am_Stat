@@ -8,28 +8,46 @@ from .forms import TelegramLoginForm
 from django.contrib.auth import logout
 from users.models import User
 from participants.models import Participant
+from django.contrib.auth import authenticate, login
 
 def home(request):
     return render(request, 'home.html')
 
-class TelegramLoginView(LoginView):
-    template_name = "registration/login.html"
-    authentication_form = TelegramLoginForm
+from django.views import View
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from .forms import TelegramLoginForm
 
-    def post(self, request, *args, **kwargs):
+class TelegramLoginView(View):
+    template_name = "registration/login.html"
+
+    def get(self, request):
+        form = TelegramLoginForm()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
         form = TelegramLoginForm(request.POST)
         if form.is_valid():
-            telegram_id = form.cleaned_data['telegram_id']
-            password = form.cleaned_data['password']
-            from django.contrib.auth import authenticate
-            user = authenticate(request, telegram_id=telegram_id, password=password)
+            telegram_id = form.cleaned_data.get("telegram_id")
+            telegram_username = form.cleaned_data.get("telegram_username")
+            password = form.cleaned_data.get("password")
+
+            print(telegram_username)
+            user = User.objects.filter(telegram_id__iexact="591768306")
+            print(user)
+
+            user = authenticate(
+                request,
+                telegram_id=telegram_id,
+                telegram_username=telegram_username,
+                password=password
+            )
+            print("User found:", user)
             if user:
                 login(request, user)
-                if not user.has_usable_password():
-                    return redirect('set_password')
-                return redirect("profile")
+                return redirect("profile")  # поменяй на нужный url
             else:
-                return render(request, self.template_name, {'form': form, 'error': 'Неверный Telegram ID или пароль'})
+                return render(request, self.template_name, {'form': form, 'error': "Неверные данные входа"})
         return render(request, self.template_name, {'form': form})
 
 @login_required
