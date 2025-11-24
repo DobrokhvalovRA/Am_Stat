@@ -1,62 +1,72 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from tournaments.models import Tournament, User
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.http import HttpResponseForbidden
+from .models import Tournament, User
 from participants.models import Participant
-from .telegram_notify import send_tournament_to_telegram, delete_tournament_message
 from .forms import TournamentForm
+from .telegram_notify import send_tournament_to_telegram, delete_tournament_message
 
+# --- CBV миксин для проверки группы ---
+class OrganizerRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.groups.filter(name="Организаторы турниров").exists()
 
+# --- CBV для создания турнира ---
+class TournamentCreateView(LoginRequiredMixin, OrganizerRequiredMixin, CreateView):
+    model = Tournament
+    form_class = TournamentForm
+    template_name = "tournaments/create.html"
+    success_url = reverse_lazy("tournament_history")
 
-def create_tournament(request):
-    if request.method == 'POST':
-        form = TournamentForm(request.POST)
-        if form.is_valid():
-            tournament = form.save()
-            return redirect('tournaments:my_tournaments')
-    else:
-        form = TournamentForm()
-    return render(request, 'tournaments/create_tournament.html', {'form': form})
+    def form_valid(self, form):
+        form.instance.organizer = self.request.user
+        return super().form_valid(form)
 
-def edit_tournament(request, pk):
-    tournament = get_object_or_404(Tournament, pk=pk)
-    if request.method == 'POST':
-        form = TournamentForm(request.POST, instance=tournament)
-        if form.is_valid():
-            form.save()
-            return redirect('tournaments:my_tournaments')
-    else:
-        form = TournamentForm(instance=tournament)
-    return render(request, 'tournaments/tournament_edit.html', {'form': form})
+# --- CBV для истории турниров (только свои) ---
+class TournamentHistoryView(LoginRequiredMixin, OrganizerRequiredMixin, ListView):
+    model = Tournament
+    template_name = "tournaments/history.html"
+    context_object_name = "tournaments"
+    def get_queryset(self):
+        return Tournament.objects.filter(organizer=self.request.user).order_by("-date")
 
+# --- CBV для редактирования турнира (только свои) ---
+class TournamentUpdateView(LoginRequiredMixin, OrganizerRequiredMixin, UpdateView):
+    model = Tournament
+    form_class = TournamentForm
+    template_name = "tournaments/edit.html"
+    success_url = reverse_lazy("tournament_history")
+    def get_queryset(self):
+        return Tournament.objects.filter(organizer=self.request.user)
 
+# --- CBV для удаления турнира (только свои) ---
+class TournamentDeleteView(LoginRequiredMixin, OrganizerRequiredMixin, DeleteView):
+    model = Tournament
+    template_name = "tournaments/confirm_delete.html"
+    success_url = reverse_lazy("tournament_history")
+
+    def get_queryset(self):
+        return Tournament.objects.filter(organizer=self.request.user)
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        delete_tournament_message(obj)
+        return super().delete(request, *args, **kwargs)
+
+# --- FBV для участников ---
 def join_tournament(request, tournament_id):
     tournament = get_object_or_404(Tournament, id=tournament_id)
     user = request.user
-    # используйте или создавайте User с реальными telegram_id и т.п.
     Participant.objects.get_or_create(tournament=tournament, user=user)
-    return redirect('my_tournaments')
+    return redirect('tournament_history')
 
 def leave_tournament(request, tournament_id):
     tournament = get_object_or_404(Tournament, id=tournament_id)
     user = request.user
     Participant.objects.filter(tournament=tournament, user=user).delete()
-    return redirect('my_tournaments')
-
-def delete_tournament(request, tournament_id):
-    tournament = get_object_or_404(Tournament, id=tournament_id)
-    delete_tournament_message(tournament)
-    tournament.delete()
-    return redirect('my_tournaments')
-
-"""def edit_tournament(request, pk):
-    tournament = get_object_or_404(Tournament, pk=pk)
-    if request.method == 'POST':
-        form = TournamentForm(request.POST, instance=tournament)
-        if form.is_valid():
-            form.save()
-            return redirect('tournaments:my_tournaments')
-    else:
-        form = TournamentForm(instance=tournament)
-    return render(request, 'tournaments/tournament_edit.html', {'form': form})"""
+    return redirect('tournament_history')
 
 def index(request):
     return render(request, "index.html")

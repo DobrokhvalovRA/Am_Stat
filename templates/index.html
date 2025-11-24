@@ -2,85 +2,126 @@
 {% load static %}
 {% block title %}Вход по Telegram ID{% endblock %}
 
-
-
-
-
- <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
-{% block menu %}
-        <nav id="navmenu" class="navmenu">
-            <ul>
-                <li><a href="#about">О чем мы тут</a></li>
-                <li><a href="#sports">Виды спорта</a></li>
-                <li><a href="#portfolio">Статистика</a></li>
-                <li><a href="#team">Турниры</a></li>
-                <li><a href="/admin">Вход для организаторов</a></li>
-                <li><a href="/login">Вход для участников</a></li>
-            </ul>
-            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-        </nav>
-
-    </div>
-{% endblock %}
+<div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+    {% block menu %}
+    <nav id="navmenu" class="navmenu">
+        <ul>
+            <li><a href="#about">О чем мы тут</a></li>
+            <li><a href="#sports">Виды спорта</a></li>
+            <li><a href="#portfolio">Статистика</a></li>
+            <li><a href="#team">Турниры</a></li>
+            <li><a href="/login">Вход для участников</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+    </nav>
+    {% endblock %}
+</div>
 
 {% block content %}
-    <!-- About Section -->
-    <section id="about" class="about section">
 
-        <!-- Section Title -->
-        <div class="container section-title" data-aos="fade-up">
-            <span class="subtitle">О чем мы тут</span>
-            <h2></h2>
-            <p>Тут можно глянуть статистику по твоим турнирам.</p>
-        </div><!-- End Section Title -->
+<!-- Sports Section -->
+<section id="sports" class="services section">
 
-        <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+        <span class="subtitle">Виды спорта</span>
+        <h2></h2>
+        <p></p>
+    </div><!-- End Section Title -->
 
-        </div>
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-    </section><!-- /About Section -->
+        <div class="row gy-5">
 
-    <!-- Services Section -->
-    <section id="sports" class="services section">
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="service-item">
 
-        <!-- Section Title -->
-        <div class="container section-title" data-aos="fade-up">
-            <span class="subtitle">Виды спорта</span>
-            <h2></h2>
-            <p></p>
-        </div><!-- End Section Title -->
+                    <img src="{% static 'assets/img/beach_volleyball.png' %}" width="180" height="auto"
+                         alt="Beach Volleyball"
+                         aria-hidden="true" focusable="false">
 
-        <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-            <div class="row gy-5">
+                    <a href="service-details.html" class="service-link">
+                        <h5>Пляжный волейбол</h5> <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div><!-- End Service Item -->
 
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="service-item">
-                        <div class="service-icon">
-                            <i class="bi bi-graph-up-arrow"></i>
-                        </div>
-                        <h3>Пляжный волейбол</h3>
-                        <p></p>
-                        <a href="service-details.html" class="service-link">
-                            Learn More <i class="bi bi-arrow-right"></i>
-                        </a>
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="service-item">
+
+                    <img src="{% static 'assets/img/beach_tennis.png' %}" width="180" height="auto"
+                         alt="Beach Tennis"
+                         aria-hidden="true" focusable="false">
+
+
+                    <a href="service-details.html" class="service-link">
+                        <h5>Пляжный теннис</h5> <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div><!-- End Service Item -->
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="service-item">
+
+                    <img src="{% static 'assets/img/bad.png' %}" width="180" height="auto" alt="badminton"
+                         aria-hidden="true" focusable="false">
+
+
+                    <a href="service-details.html" class="service-link">
+                        <h5>Пляжный бадминтон</h5> <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div><!-- End Service Item -->
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="service-item">
+
+                    <img src="{% static 'assets/img/biliard.png' %}" width="180" height="auto" alt="biliard"
+                         aria-hidden="true" focusable="false">
+                    <a href="service-details.html" class="service-link">
+                        <h5>Бильярд</h5> <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div><!-- End Service Item -->
+
+
+
+            <!-- Можете добавить другие виды спорта аналогично -->
+            <!--
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="service-item">
+                    <div class="service-icon">
+                        <svg width="40" height="40">
+                            <use href="{% static 'sports_icons_sprite.svg' %}#badminton"></use>
+                        </svg>
                     </div>
-                </div><!-- End Service Item -->
-
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                    <div class="service-item">
-                        <div class="service-icon">
-                            <i class="bi bi-palette"></i>
-                        </div>
-                        <h3>Пляжный теннис</h3>
-                        <p></p>
-                        <a href="service-details.html" class="service-link">
-                            Learn More <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
-                </div><!-- End Service Item -->
+                    <h3>Бадминтон</h3>
+                    <p></p>
+                    <a href="service-details.html" class="service-link">
+                        Learn More <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
             </div>
-        </div>
+            -->
 
-    </section><!-- /Services Section -->
+        </div>
+    </div>
+</section><!-- /Services Section -->
+
+<!-- About Section -->
+<section id="about" class="about section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+        <span class="subtitle">О чем мы тут</span>
+        <h2></h2>
+        <p>Тут можно глянуть статистику по твоим турнирам.</p>
+    </div><!-- End Section Title -->
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+    </div>
+
+</section><!-- /About Section -->
 {% endblock %}

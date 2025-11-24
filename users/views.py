@@ -1,22 +1,14 @@
-from django.contrib.auth import login
-from django.contrib.auth.views import LoginView
+from django.contrib.auth import login, logout, update_session_auth_hash, authenticate
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash
 from .forms import TelegramLoginForm
-from django.contrib.auth import logout
 from users.models import User
 from participants.models import Participant
-from django.contrib.auth import authenticate, login
+from django.views import View
 
 def home(request):
     return render(request, 'home.html')
-
-from django.views import View
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-from .forms import TelegramLoginForm
 
 class TelegramLoginView(View):
     template_name = "registration/login.html"
@@ -32,22 +24,25 @@ class TelegramLoginView(View):
             telegram_username = form.cleaned_data.get("telegram_username")
             password = form.cleaned_data.get("password")
 
-            print(telegram_username)
-            user = User.objects.filter(telegram_id__iexact="591768306")
-            print(user)
-
-            user = authenticate(
+            # Кастомная аутентификация
+            user_auth = authenticate(
                 request,
                 telegram_id=telegram_id,
                 telegram_username=telegram_username,
                 password=password
             )
-            print("User found:", user)
-            if user:
-                login(request, user)
-                return redirect("profile")  # поменяй на нужный url
+
+            if user_auth:
+                login(request, user_auth)
+                # Если у пользователя нет пароля, предлагаем его создать
+                if not user_auth.has_usable_password():
+                    return redirect("set_password")
+                return redirect("profile")
             else:
-                return render(request, self.template_name, {'form': form, 'error': "Неверные данные входа"})
+                return render(request, self.template_name, {
+                    'form': form,
+                    'error': "Неверные данные входа"
+                })
         return render(request, self.template_name, {'form': form})
 
 @login_required
@@ -65,14 +60,13 @@ def set_password(request):
             user.save()
             update_session_auth_hash(request, user)
             messages.success(request, "Пароль успешно установлен!")
-            return redirect("/")
+            return redirect("profile")
     return render(request, "registration/set_password.html")
 
 @login_required
 def profile_view(request):
     user = request.user
-
-    # Получаем связанные записи участника
+    is_organizer = user.groups.filter(name="Организаторы турниров").exists()
     history = Participant.objects.filter(user=user).select_related('tournament')
 
     if request.method == "POST":
@@ -84,29 +78,24 @@ def profile_view(request):
                 user.set_password(new_password)
                 user.save()
                 messages.success(request, "Пароль успешно изменён.")
-                # После смены пароля нужно заново авторизовать пользователя (опционально)
-                # from django.contrib.auth import update_session_auth_hash
-                # update_session_auth_hash(request, user)
             else:
                 messages.error(request, "Пароли не совпадают.")
 
-    # Обработка изменения профиля
-    if request.method == "POST":
+        # Обработка изменения профиля
         user.nickname = request.POST.get("nickname", user.nickname)
         user.phone = request.POST.get("phone", user.phone)
-        user.photo = request.FILES.get("photo", user.photo)
+        photo_file = request.FILES.get("photo")
+        if photo_file:
+            user.photo = photo_file
         user.save()
         return redirect('profile')
-
-
 
     return render(request, "users/profile.html", {
         "user": user,
         "history": history,
-
+        "is_organizer": is_organizer,
     })
 
 def logout_view(request):
     logout(request)
     return redirect('login')
-
