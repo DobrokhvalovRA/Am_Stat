@@ -7,7 +7,7 @@ from users.models import User
 from participants.models import Participant
 from django.views import View
 from django.utils import timezone
-from datetime import timedelta
+from datetime import timedelta, datetime
 from django.db.utils import OperationalError, ProgrammingError
 
 def home(request):
@@ -26,7 +26,6 @@ class TelegramLoginView(View):
         # Check if currently locked out
         lockout_until = request.session.get(lockout_key)
         if lockout_until:
-            from datetime import datetime
             lockout_time = datetime.fromisoformat(lockout_until)
             if timezone.now() < lockout_time:
                 remaining = (lockout_time - timezone.now()).seconds // 60
