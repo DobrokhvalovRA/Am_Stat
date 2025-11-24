@@ -8,6 +8,7 @@ from participants.models import Participant
 from django.views import View
 from django.utils import timezone
 from datetime import timedelta
+from django.db.utils import OperationalError, ProgrammingError
 
 def home(request):
     return render(request, 'home.html')
@@ -25,7 +26,8 @@ class TelegramLoginView(View):
         # Check if currently locked out
         lockout_until = request.session.get(lockout_key)
         if lockout_until:
-            lockout_time = timezone.datetime.fromisoformat(lockout_until)
+            from datetime import datetime
+            lockout_time = datetime.fromisoformat(lockout_until)
             if timezone.now() < lockout_time:
                 remaining = (lockout_time - timezone.now()).seconds // 60
                 return False, f"Слишком много попыток входа. Попробуйте через {remaining} минут"
@@ -184,7 +186,7 @@ def profile_view(request):
     # Try to get participant history, but handle if the table doesn't exist (e.g., during tests)
     try:
         history = Participant.objects.filter(user=user).select_related('tournament')
-    except Exception:
+    except (OperationalError, ProgrammingError):
         history = []
 
     if request.method == "POST":

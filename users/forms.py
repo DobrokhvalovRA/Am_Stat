@@ -38,7 +38,7 @@ class PasswordCreationForm(forms.Form):
 
     def clean_password1(self):
         password1 = self.cleaned_data.get('password1')
-        if len(password1) < 8:
+        if password1 and len(password1) < 8:
             raise ValidationError("Пароль должен содержать минимум 8 символов")
         return password1
 
