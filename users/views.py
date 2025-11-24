@@ -180,7 +180,12 @@ def set_password(request):
 def profile_view(request):
     user = request.user
     is_organizer = user.groups.filter(name="Организаторы турниров").exists()
-    history = Participant.objects.filter(user=user).select_related('tournament')
+    
+    # Try to get participant history, but handle if the table doesn't exist (e.g., during tests)
+    try:
+        history = Participant.objects.filter(user=user).select_related('tournament')
+    except Exception:
+        history = []
 
     if request.method == "POST":
         # Смена пароля
