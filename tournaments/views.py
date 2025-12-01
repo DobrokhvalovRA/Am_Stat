@@ -68,5 +68,10 @@ def leave_tournament(request, tournament_id):
     Participant.objects.filter(tournament=tournament, user=user).delete()
     return redirect('tournament_history')
 
+def list_tournaments(request):
+    # Например, действующие турниры — те, у кого status равен 'active'
+    tournaments = Tournament.objects.filter(status='active')
+    return render(request, "tournaments/list_tournaments.html", {"tournaments": tournaments})
+
 def index(request):
     return render(request, "index.html")

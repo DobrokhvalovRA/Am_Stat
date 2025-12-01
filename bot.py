@@ -17,6 +17,59 @@ def safe_json_response(resp):
         logger.error(f"Ошибка чтения JSON: {exc}. Ответ: {resp.text}")
         return {}
 
+def get_user_sportlevel(user_id, sport_type):
+    print(user_id)
+    resp = requests.get(f"http://localhost:8000/api/sportlevel/?user={user_id}&sport_type={sport_type}")
+    print(resp)
+    try:
+        data = resp.json()
+    except Exception:
+        data = []
+    if resp.status_code == 200 and data:
+        sl = data[0]
+        return sl.get("rating"), sl.get("level")
+    return None, None
+
+def build_tournament_message(t):
+    sport_type = t.get('sport_type')
+    levels = t.get('level', '?')
+    text = (
+        f"Турнир №{t.get('id','?')}\n"
+        f"Название: {t.get('name','?')}\n"
+        f"Дата: {t.get('date','?')}\n"
+        f"Место проведения: {t.get('location','?')}\n"
+        f"Формат: {'Одиночный' if t.get('format','solo')=='solo' else 'Парный'}\n"
+        f"Взнос: {t.get('fee','?')}\n"
+        f"Допустимые уровни: {levels}\n"
+        f"Количество игроков: {t.get('players_count','?')}\n"
+        "-----------------------------\n"
+        "Список игроков:\n"
+    )
+    players = t.get('participants', [])
+    for i, p in enumerate(players, 1):
+        user_data = p.get('user', {})
+
+        first_name = user_data.get('first_name', '')
+        last_name = user_data.get('last_name', '')
+        telegram_id = user_data.get('telegram_id', '')
+        phone = user_data.get('phone', '')
+        display_name = " ".join(part for part in [first_name, last_name, phone] if part).strip() or user_data.get('username', 'Пользователь')
+
+        # Получаем уровень из SportLevel
+        rating, level = get_user_sportlevel(user_data.get('id'), sport_type)
+        level_info = f"{level} ({rating})" if level else "нет уровня"
+        text += f"{i}. {display_name} ({telegram_id}) — {level_info}\n"
+    for i in range(len(players) + 1, t.get('players_count', 0) + 1):
+        text += f"{i}. [свободно]\n"
+    return text
+
+"""def safe_json_response(resp):
+    try:
+        return resp.json()
+    except Exception as exc:
+        logger.error(f"Ошибка чтения JSON: {exc}. Ответ: {resp.text}")
+        return {}
+
 def build_tournament_message(t):
     text = (
         f"Турнир №{t.get('id','?')}\n"
@@ -43,7 +96,7 @@ def build_tournament_message(t):
         text += f"{i}. {display_name} ({telegram_id})\n"
     for i in range(len(players) + 1, t.get('players_count', 0) + 1):
         text += f"{i}. [свободно]\n"
-    return text
+    return text"""
 
 def build_buttons(t):
     tournament_id = t.get('id', '?')

@@ -5,7 +5,6 @@ urlpatterns = [
     path('', home, name='home'),  # главная страница (если нужна)
     path('login/', TelegramLoginView.as_view(), name='login'),
     path('create-password/', create_password, name='create_password'),
-    path('set-password/', set_password, name='set_password'),
+
     path('profile/', profile_view, name='profile'),
-    path('logout/', logout_view, name='logout'),
-]
+    path('logout/', logout_view, name='logout')]

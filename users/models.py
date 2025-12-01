@@ -6,9 +6,23 @@ class User(AbstractUser):
     nickname = models.CharField(max_length=50)
     gender = models.CharField(max_length=10, choices=[('male', 'Муж'), ('female', 'Жен')])
     phone = models.CharField(max_length=20, blank=True)
-    level = models.CharField(max_length=20, blank=True, editable=False)
     photo = models.ImageField(upload_to='profiles/', blank=True, null=True)
-    rating = models.DecimalField(max_digits=4,decimal_places=2,default=0.00,verbose_name="Рейтинг")
+
+    def __str__(self):
+        return self.nickname or self.username
+
+
+SPORT_TYPES = [
+    ('beach_volleyball', 'Пляжный волейбол'),
+    ('beach_tennis', 'Пляжный теннис'),
+    ('beach_badminton', 'Пляжный бадминтон'),
+]
+
+class SportLevel(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    sport_type = models.CharField(max_length=30, choices=SPORT_TYPES)
+    level = models.CharField(max_length=20, blank=True, editable=False)
+    rating = models.DecimalField(max_digits=4, decimal_places=2, default=0.00, verbose_name="Рейтинг")
 
     def get_level_by_rating(self):
         if self.rating <= 12.50:
@@ -31,6 +45,3 @@ class User(AbstractUser):
     def save(self, *args, **kwargs):
         self.level = self.get_level_by_rating()
         super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.nickname or self.username

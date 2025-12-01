@@ -8,6 +8,7 @@ from .views import (
     TournamentDeleteView,
     join_tournament,
     leave_tournament,
+    list_tournaments,
 )
 
 router = DefaultRouter()
@@ -20,6 +21,7 @@ urlpatterns = [
     path("delete/<int:pk>/", TournamentDeleteView.as_view(), name="delete_tournament"),
     path("join/<int:tournament_id>/", join_tournament, name="join_tournament"),
     path("leave/<int:tournament_id>/", leave_tournament, name="leave_tournament"),
+    path('list_tournaments/', list_tournaments, name='list_tournaments'),
 ]
 
 urlpatterns += router.urls
