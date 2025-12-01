@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .stroke { stroke:#123A66; stroke-width:14; stroke-linecap:round; stroke-linejoin:round; fill:none; }
+      .bg-split { fill:#43B17A; }
+      .bg-split2 { fill:#F17A3A; }
+      .net { fill:none; stroke:#123A66; stroke-width:12; stroke-linecap:round; stroke-linejoin:round; }
+      .ball { fill:#ffffff; stroke:#123A66; stroke-width:10; }
+    </style>
+  </defs>
+  <circle cx="256" cy="256" r="236" class="stroke" fill="none"/>
+  <path d="M20 256a236 236 0 0 1 236-236v236z" class="bg-split"/>
+  <path d="M492 256a236 236 0 0 0-236-236v236z" class="bg-split2"/>
+  <circle cx="256" cy="256" r="172" fill="#FFFFFF"/>
+  <!-- net -->
+  <g transform="translate(0,0)">
+    <rect x="100" y="250" width="312" height="12" fill="#123A66" rx="6"/>
+    <!-- grid -->
+    <g stroke="#123A66" stroke-width="8" stroke-linecap="round">
+      <path d="M112 240v64M142 240v64M172 240v64M202 240v64M232 240v64M262 240v64M292 240v64M322 240v64"/>
+      <path d="M112 240h304M112 272h304M112 304h304"/>
+    </g>
+    <!-- ball -->
+    <g transform="translate(320,160)">
+      <circle cx="0" cy="0" r="44" class="ball"/>
+      <path d="M-28 -10c12 8 28 10 40 4" stroke="#123A66" stroke-width="8" stroke-linecap="round" fill="none"/>
+      <path d="M-6 28c8-8 20-12 34-10" stroke="#123A66" stroke-width="8" stroke-linecap="round" fill="none"/>
+    </g>
+  </g>
+</svg>

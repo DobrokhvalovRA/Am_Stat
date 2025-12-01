@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .stroke { stroke:#123A66; stroke-width:14; stroke-linecap:round; stroke-linejoin:round; fill:none; }
+      .bg-split { fill:#43B17A; }
+      .bg-split2 { fill:#F17A3A; }
+      .shuttle { fill:#ffffff; stroke:#123A66; stroke-width:10; stroke-linejoin:round; }
+    </style>
+  </defs>
+  <circle cx="256" cy="256" r="236" class="stroke" fill="none"/>
+  <path d="M20 256a236 236 0 0 1 236-236v236z" class="bg-split"/>
+  <path d="M492 256a236 236 0 0 0-236-236v236z" class="bg-split2"/>
+  <circle cx="256" cy="256" r="172" fill="#FFFFFF"/>
+  <!-- shuttlecock -->
+  <g transform="translate(128,84) scale(1.1)">
+    <path d="M160 64c0 0-18-28-36-28s-36 28-36 28l-8 120 80 0z" class="shuttle" />
+    <g stroke="#123A66" stroke-width="10" fill="none">
+      <path d="M100 60c28-8 48 8 64 32"/>
+      <path d="M124 72c18-2 28 6 38 20"/>
+      <path d="M136 92c8 2 12 6 20 16"/>
+      <path d="M112 160c18 0 22 14 28 24"/>
+    </g>
+    <!-- base (cork) -->
+    <ellipse cx="160" cy="200" rx="22" ry="18" class="shuttle"/>
+  </g>
+</svg>
