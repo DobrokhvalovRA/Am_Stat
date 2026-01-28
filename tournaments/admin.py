@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from django.shortcuts import render, get_object_or_404
-from .models import Tournament
+from . import models
 from participants.models import Participant
 
 class TournamentAdmin(admin.ModelAdmin):
@@ -16,7 +16,7 @@ class TournamentAdmin(admin.ModelAdmin):
         return custom_urls + urls
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
-        tournament = get_object_or_404(Tournament, pk=object_id)
+        tournament = get_object_or_404(models.Tournament, pk=object_id)
         return render(request, 'admin/tournaments/custom_change_buttons.html', {
             'tournament': tournament,
         })
@@ -26,14 +26,17 @@ class TournamentAdmin(admin.ModelAdmin):
         return super().change_view(request, str(tournament_id))
 
     def start_tournament_view(self, request, tournament_id):
-        tournament = get_object_or_404(Tournament, pk=tournament_id)
+        tournament = get_object_or_404(models.Tournament, pk=tournament_id)
         participants = Participant.objects.filter(tournament=tournament)
         return render(request, 'admin/tournaments/tournament_start.html', {
             'tournament': tournament,
             'participants': participants,
         })
 
-admin.site.register(Tournament, TournamentAdmin)
+admin.site.register(models.Tournament, TournamentAdmin)
+admin.site.register(models.Round)
+admin.site.register(models.GameTeam)
+admin.site.register(models.Game)
 
 """from django.contrib import admin
 from django.urls import path
