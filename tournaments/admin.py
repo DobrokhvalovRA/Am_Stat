@@ -26,10 +26,10 @@ class TournamentAdmin(admin.ModelAdmin):
         # Перенаправление на стандартную админ-форму
         return super().change_view(request, str(tournament_id))
 
-    def start_tournament_view(self, request, tournament_id):
+    def start_tournament_view(request, tournament_id):
         tournament = get_object_or_404(models.Tournament, pk=tournament_id)
         participants = Participant.objects.filter(tournament=tournament)
-        return render(request, 'admin/tournaments/tournament_start.html', {
+        return render(request, 'tournaments/tournament_start.html', {
             'tournament': tournament,
             'participants': participants,
         })

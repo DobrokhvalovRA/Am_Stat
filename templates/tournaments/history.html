@@ -58,7 +58,7 @@
                                            <i class="bi bi-trash"></i>
                                         </a>
                                         {% if tournament.status == 'active' %}
-                                            <a href="{% url 'edit_tournament' tournament.pk %}"
+                                            <a href="{% url 'start_tournament' tournament.pk %}"
                                                class="btn btn-sm btn-outline-success me-1">
                                                <i class="bi bi-play-circle"></i> Начать
                                             </a>
