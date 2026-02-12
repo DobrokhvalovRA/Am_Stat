@@ -50,25 +50,16 @@ class Tournament(models.Model):
     def __str__(self):
         return f"{self.name} ({self.date})"
 
-class Round(models.Model):
+class Tour(models.Model):
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     number = models.IntegerField()
 
     def __str__(self):
         return f"Раунд № {self.number}"
     
-class GameTeam(models.Model):
-    players = models.ManyToManyField(User)
+class Match(models.Model):
+    tour = models.ForeignKey(Tour, on_delete=models.CASCADE)
 
     def __str__(self):
-        nicknames = []
-        for player in self.players.all():
-            nicknames.append(player.nickname)
-        return ", ".join(nicknames)
-    
-class Game(models.Model):
-    round = models.ForeignKey(Round, on_delete=models.CASCADE)
-    teams = models.ManyToManyField(GameTeam)
-
-    def __str__(self):
-        allTeams = self.teams.all();
+        allTeams = self.teams.all()
         return str(allTeams[0]) + " VS " + str(allTeams[1])

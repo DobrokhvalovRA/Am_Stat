@@ -3,6 +3,7 @@ from django.urls import path
 from django.shortcuts import render, get_object_or_404
 from . import models
 from participants.models import Participant
+from models.TeamComposition import TeamComposition
 
 class TournamentAdmin(admin.ModelAdmin):
     list_display = ("name", "date", "location", "organizer")
@@ -34,9 +35,9 @@ class TournamentAdmin(admin.ModelAdmin):
         })
 
 admin.site.register(models.Tournament, TournamentAdmin)
-admin.site.register(models.Round)
-admin.site.register(models.GameTeam)
-admin.site.register(models.Game)
+admin.site.register(models.Tour)
+admin.site.register(TeamComposition)
+admin.site.register(models.Match)
 
 """from django.contrib import admin
 from django.urls import path

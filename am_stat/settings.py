@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'users',
     'tournaments',
     'participants',
+    'models',
     'rest_framework',
 ]
 
