@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from . import models
 from participants.models import Participant
 from models.TeamComposition import TeamComposition
+from models.DataAccessManager import SaveTour
 from businessLogic import Player
 from businessLogic import Generator
 
@@ -29,15 +30,22 @@ class TournamentAdmin(admin.ModelAdmin):
         return super().change_view(request, str(tournament_id))
 
     def start_tournament_view(request, tournament_id):
+        activeStatus = 'active'
         tournament = get_object_or_404(models.Tournament, pk=tournament_id)
+        if tournament.status == activeStatus:
+            raise BaseException("Турнир уще начат, невозможно начать его заново.")
         participants = Participant.objects.filter(tournament=tournament)
         players = []
         for participant in participants:
             sportLevels = participant.user.sportlevel_set.filter(sport_type__contains="beach_volleyball")
             if len(sportLevels) != 1:
                 raise BaseException("У пользователя " + str(participant.user) + " не указан уровень игры в пляжный воллейбол")
-            players.append(Player.Player(participant.user.id, str(participant.user), sportLevels[0].rating))
+            players.append(Player.Player(participant.id, str(participant.user), sportLevels[0].rating))
         tours = Generator.Generator.GenerateMatchesAmericano(players, 0)
+        for tour in tours:
+            SaveTour(tour, tournament)
+        tournament.status = activeStatus
+        tournament.save()
         return render(request, 'tournaments/tournament_start.html', {
             'tournament': tournament,
             'participants': participants,

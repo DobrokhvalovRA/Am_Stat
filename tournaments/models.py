@@ -8,6 +8,7 @@ class Tournament(models.Model):
         ('pair', 'Парный')
     ]
     STATUS_CHOICES = [
+        ('pending', 'Идёт набор игроков'),
         ('active', 'Активный'),
         ('cancelled', 'Отменён'),
         ('finished', 'Завершён'),

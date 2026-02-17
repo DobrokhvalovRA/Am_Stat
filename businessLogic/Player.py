@@ -1,6 +1,6 @@
 class Player:
-    def __init__(self, userId, playerName, sportLevel):
-        self.userId = userId
+    def __init__(self, participantId, playerName, sportLevel):
+        self.participantId = participantId
         self.playerName = playerName
         self.sportLevel = sportLevel
 
