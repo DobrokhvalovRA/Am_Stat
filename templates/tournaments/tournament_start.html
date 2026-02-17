@@ -26,11 +26,18 @@
                     <ul class="list-group mb-4">
                       {% for p in participants %}
                         <li class="list-group-item">
-                          {{ p.user.first_name }} {{ p.user.last_name }} ({{ p.user.telegram_id }})
-                          {% if p.user.username %}| {{ p.user.username }}{% endif %}
+                          {{ p.user }}
                         </li>
                       {% empty %}
                         <li class="list-group-item">Нет участников</li>
+                      {% endfor %}
+                    </ul>
+                    <h4 class="mb-2">Матчи:</h4>
+                    <ul class="list-group mb-4">
+                      {% for m in matches %}
+                        <li class="list-group-item">
+                          {{ m }}
+                        </li>
                       {% endfor %}
                     </ul>
                     <div class="d-flex justify-content-end">

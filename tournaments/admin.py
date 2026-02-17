@@ -4,6 +4,8 @@ from django.shortcuts import render, get_object_or_404
 from . import models
 from participants.models import Participant
 from models.TeamComposition import TeamComposition
+from businessLogic import Player
+from businessLogic import Generator
 
 class TournamentAdmin(admin.ModelAdmin):
     list_display = ("name", "date", "location", "organizer")
@@ -29,9 +31,17 @@ class TournamentAdmin(admin.ModelAdmin):
     def start_tournament_view(request, tournament_id):
         tournament = get_object_or_404(models.Tournament, pk=tournament_id)
         participants = Participant.objects.filter(tournament=tournament)
+        players = []
+        for participant in participants:
+            sportLevels = participant.user.sportlevel_set.filter(sport_type__contains="beach_volleyball")
+            if len(sportLevels) != 1:
+                raise BaseException("У пользователя " + str(participant.user) + " не указан уровень игры в пляжный воллейбол")
+            players.append(Player.Player(participant.user.id, str(participant.user), sportLevels[0].rating))
+        matches = Generator.Generator.GenerateMatchesAmericano(players, 0)
         return render(request, 'tournaments/tournament_start.html', {
             'tournament': tournament,
             'participants': participants,
+            'matches': matches
         })
 
 admin.site.register(models.Tournament, TournamentAdmin)

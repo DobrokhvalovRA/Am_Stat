@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'tournaments',
     'participants',
     'models',
+    'businessLogic',
     'rest_framework',
 ]
 

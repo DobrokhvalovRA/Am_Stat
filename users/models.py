@@ -9,7 +9,7 @@ class User(AbstractUser):
     photo = models.ImageField(upload_to='profiles/', blank=True, null=True)
 
     def __str__(self):
-        return self.nickname or self.username
+        return self.nickname or self.username or self.first_name + ' ' + self.last_name
 
 
 SPORT_TYPES = [
