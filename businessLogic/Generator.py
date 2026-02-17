@@ -1,6 +1,7 @@
 from itertools import combinations
 from . import MatchDto
 from . import Team
+from . import TourDto
 
 class Generator:
     @staticmethod
@@ -21,7 +22,19 @@ class Generator:
                     matches.append((levelDiff, match))
         matches.sort(key = lambda t: t[0])
         result = []
+        usedPlayers = set()
+        currentTour = TourDto.TourDto(1)
         for _, m in matches:
-            result.append(m)
+            playersInMatch = { m.teamA.player1, m.teamA.player2, m.teamB.player1, m.teamB.player2 }
+            if not (usedPlayers & playersInMatch):
+                currentTour.addMatch(m)
+                usedPlayers.update(playersInMatch)
+            else:
+                result.append(currentTour)
+                currentTour = TourDto.TourDto(currentTour.number + 1)
+                currentTour.addMatch(m)
+                usedPlayers = playersInMatch
+        if currentTour.matches:
+            result.append(currentTour)
         return result
 
