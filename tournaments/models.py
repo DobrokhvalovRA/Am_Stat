@@ -36,7 +36,7 @@ class Tournament(models.Model):
     fee = models.DecimalField(max_digits=8, decimal_places=2)
     level = MultiSelectField(choices=LEVEL_CHOICES, default=[], blank=True, verbose_name='Допустимые уровни')
     players_count = models.PositiveIntegerField()
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='active')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     sport_type = models.CharField(max_length=32, choices=SPORT_TYPE_CHOICES, default='beach_volleyball', verbose_name='Вид спорта')
     organizer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='organized_tournaments')
 

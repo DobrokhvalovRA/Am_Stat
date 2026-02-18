@@ -27,12 +27,6 @@ class TournamentForm(forms.ModelForm):
         # При редактировании, чтобы показать уже выбранные уровни
         if self.instance and self.instance.pk:
             self.fields['allowed_levels'].initial = self.instance.level
-
-    def clean_players_count(self):
-        pc = int(self.cleaned_data.get('players_count'))
-        if pc != 4:
-            raise ValidationError("Пока турниры можно создавать только для 4х участников.")
-        return pc
     
     def clean_format(self):
         format = self.cleaned_data.get('format')

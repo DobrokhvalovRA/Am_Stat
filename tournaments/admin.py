@@ -41,7 +41,7 @@ class TournamentAdmin(admin.ModelAdmin):
             if len(sportLevels) != 1:
                 raise BaseException("У пользователя " + str(participant.user) + " не указан уровень игры в пляжный воллейбол")
             players.append(Player.Player(participant.id, str(participant.user), sportLevels[0].rating))
-        tours = Generator.Generator.GenerateMatchesAmericano(players, 0)
+        tours = Generator.Generator.GenerateMatchesAmericano(players, 8)
         for tour in tours:
             SaveTour(tour, tournament)
         tournament.status = activeStatus

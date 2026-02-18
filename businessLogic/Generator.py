@@ -21,20 +21,23 @@ class Generator:
                     match = MatchDto.MatchDto(Team.Team(pairA[0], pairA[1]), Team.Team(pairB[0], pairB[1]), levelDiff)
                     matches.append((levelDiff, match))
         matches.sort(key = lambda t: t[0])
+        print(matches)
         result = []
-        usedPlayers = set()
-        currentTour = TourDto.TourDto(1)
-        for _, m in matches:
-            playersInMatch = { m.teamA.player1, m.teamA.player2, m.teamB.player1, m.teamB.player2 }
-            if not (usedPlayers & playersInMatch):
-                currentTour.addMatch(m)
-                usedPlayers.update(playersInMatch)
-            else:
-                result.append(currentTour)
-                currentTour = TourDto.TourDto(currentTour.number + 1)
-                currentTour.addMatch(m)
-                usedPlayers = playersInMatch
-        if currentTour.matches:
+        currentTourNumber = 1
+        while matches and currentTourNumber <= maxTours:
+            usedPlayers = set()
+            currentTour = TourDto.TourDto(currentTourNumber)
+            i = 0
+            while i < len(matches):
+                _, m = matches[i]
+                playersInMatch = { m.teamA.player1, m.teamA.player2, m.teamB.player1, m.teamB.player2 }
+                if not (usedPlayers & playersInMatch):
+                    currentTour.addMatch(m)
+                    usedPlayers.update(playersInMatch)
+                    matches.pop(i)
+                    i = i - 1
+                i = i + 1
             result.append(currentTour)
+            currentTourNumber = currentTourNumber + 1
         return result
 
