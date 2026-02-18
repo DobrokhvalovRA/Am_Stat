@@ -42,7 +42,8 @@
                                     <td>{{ tournament.get_format_display }}</td>
                                     <td>
                                         <span class="badge
-                                            {% if tournament.status == 'active' %} bg-success
+                                            {% if tournament.status == 'pending' %} bg-success
+                                            {% elif tournament.status == 'active' %} bg-success
                                             {% elif tournament.status == 'finished' %} bg-secondary
                                             {% elif tournament.status == 'cancelled' %} bg-danger
                                             {% endif %}">
@@ -57,8 +58,8 @@
                                            onclick="return confirm('Вы уверены, что хотите удалить турнир?');">
                                            <i class="bi bi-trash"></i>
                                         </a>
-                                        {% if tournament.status == 'active' %}
-                                            <a href="{% url 'edit_tournament' tournament.pk %}"
+                                        {% if tournament.status == 'pending' and tournament.registeredCount == tournament.players_count %}
+                                            <a href="{% url 'start_tournament' tournament.pk %}"
                                                class="btn btn-sm btn-outline-success me-1">
                                                <i class="bi bi-play-circle"></i> Начать
                                             </a>

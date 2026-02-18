@@ -1,6 +1,7 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
 from .api_views import TournamentViewSet
+from . import admin
 from .views import (
     TournamentCreateView,
     TournamentHistoryView,
@@ -18,6 +19,7 @@ urlpatterns = [
     path("create/", TournamentCreateView.as_view(), name="create_tournament"),
     path("history/", TournamentHistoryView.as_view(), name="tournament_history"),
     path("edit/<int:pk>/", TournamentUpdateView.as_view(), name="edit_tournament"),
+    path("start/<int:tournament_id>/", admin.TournamentAdmin.start_tournament_view, name="start_tournament"),
     path("delete/<int:pk>/", TournamentDeleteView.as_view(), name="delete_tournament"),
     path("join/<int:tournament_id>/", join_tournament, name="join_tournament"),
     path("leave/<int:tournament_id>/", leave_tournament, name="leave_tournament"),

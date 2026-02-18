@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseForbidden
+from django.db.models import Count
 from .models import Tournament, User
 from participants.models import Participant
 from .forms import TournamentForm
@@ -30,7 +31,7 @@ class TournamentHistoryView(LoginRequiredMixin, OrganizerRequiredMixin, ListView
     template_name = "tournaments/history.html"
     context_object_name = "tournaments"
     def get_queryset(self):
-        return Tournament.objects.filter(organizer=self.request.user).order_by("-date")
+        return Tournament.objects.filter(organizer=self.request.user).order_by("-date").annotate(registeredCount = Count('participants'))
 
 # --- CBV для редактирования турнира (только свои) ---
 class TournamentUpdateView(LoginRequiredMixin, OrganizerRequiredMixin, UpdateView):

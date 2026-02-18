@@ -8,6 +8,7 @@ class Tournament(models.Model):
         ('pair', 'Парный')
     ]
     STATUS_CHOICES = [
+        ('pending', 'Идёт набор игроков'),
         ('active', 'Активный'),
         ('cancelled', 'Отменён'),
         ('finished', 'Завершён'),
@@ -35,7 +36,7 @@ class Tournament(models.Model):
     fee = models.DecimalField(max_digits=8, decimal_places=2)
     level = MultiSelectField(choices=LEVEL_CHOICES, default=[], blank=True, verbose_name='Допустимые уровни')
     players_count = models.PositiveIntegerField()
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='active')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     sport_type = models.CharField(max_length=32, choices=SPORT_TYPE_CHOICES, default='beach_volleyball', verbose_name='Вид спорта')
     organizer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='organized_tournaments')
 
@@ -49,3 +50,17 @@ class Tournament(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.date})"
+
+class Tour(models.Model):
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+    number = models.IntegerField()
+
+    def __str__(self):
+        return f"Раунд № {self.number}"
+    
+class Match(models.Model):
+    tour = models.ForeignKey(Tour, on_delete=models.CASCADE)
+
+    def __str__(self):
+        allTeams = self.teams.all()
+        return str(allTeams[0]) + " VS " + str(allTeams[1])

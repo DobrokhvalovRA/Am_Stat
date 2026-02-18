@@ -26,13 +26,22 @@
                     <ul class="list-group mb-4">
                       {% for p in participants %}
                         <li class="list-group-item">
-                          {{ p.user.first_name }} {{ p.user.last_name }} ({{ p.user.telegram_id }})
-                          {% if p.user.username %}| {{ p.user.username }}{% endif %}
+                          {{ p.user }}
                         </li>
                       {% empty %}
                         <li class="list-group-item">Нет участников</li>
                       {% endfor %}
                     </ul>
+                      {% for t in tours %}
+                        <h4 class="mb-2">Тур № {{ t.number }}:</h4>
+                        <ul class="list-group mb-4">
+                          {% for m in t.matches %}
+                            <li class="list-group-item">
+                              {{ m }}
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      {% endfor %}
                     <div class="d-flex justify-content-end">
                         <a class="btn btn-secondary flex-grow-1" href="../../">Назад</a>
                     </div>
